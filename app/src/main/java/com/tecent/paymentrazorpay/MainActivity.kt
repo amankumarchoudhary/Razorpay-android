@@ -3,16 +3,16 @@ package com.tecent.paymentrazorpay
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.razorpay.Checkout
-import com.razorpay.PaymentResultListener
+import com.razorpay.PaymentData
+import com.razorpay.PaymentResultWithDataListener
 import com.tecent.paymentrazorpay.databinding.ActivityMainBinding
 import org.json.JSONObject
 
 
-class MainActivity : AppCompatActivity(), PaymentResultListener {
+class MainActivity : AppCompatActivity(), PaymentResultWithDataListener {
     val TAG = "gateway"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
          * Instantiate Checkout
          */
         val checkout = Checkout()
-//        checkout.setKeyID("rzp_test_FIyDsosGNRebtc")
+        checkout.setKeyID("rzp_test_FIyDsosGNRebtc")
         /**
          * Set your logo here
          */
@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
 //            options.put("order_id", "order_DBJOWzybf0sJbb") //from response of step 3.
             options.put("theme.color", "#3399cc")
             options.put("currency", "INR")
-            options.put("amount", "100") //pass amount in currency subunits
+            options.put("amount", "1000") //pass amount in currency subunits
             options.put("prefill.email", "aman.kumar.choudhary@yopmail.com")
             options.put("prefill.contact", "1234567898")
             checkout.open(activity, options)
@@ -65,11 +65,21 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
         }
     }
 
-    override fun onPaymentError(p0: Int, p1: String?) {
-        Toast.makeText(this, "Payment failed", Toast.LENGTH_SHORT).show()
+    /* override fun onPaymentError(p0: Int, p1: String?) {
+         Log.d("yesyes n", p1)
+         Toast.makeText(this, "Payment failed", Toast.LENGTH_SHORT).show()
+     }
+
+     override fun onPaymentSuccess(p0: String?) {
+         Log.d("yesyes n", p0)
+         Toast.makeText(this, "Payment Successful", Toast.LENGTH_SHORT).show()
+     }*/
+
+    override fun onPaymentSuccess(p0: String?, p1: PaymentData?) {
+        Log.d("yesyes a", p0 + " " + p1.toString())
     }
 
-    override fun onPaymentSuccess(p0: String?) {
-        Toast.makeText(this, "Payment Successful", Toast.LENGTH_SHORT).show()
+    override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
+//        TODO("Not yet implemented")
     }
 }
